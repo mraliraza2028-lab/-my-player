@@ -1,18 +1,19 @@
 workflows:
   android-workflow:
-    name: My Player Build
-    environment:
-      flutter: stable
-      java: 17
+    name: Android Workflow
+    max_build_duration: 60
+    instance_type: mac_mini_m1
     scripts:
-      - name: Set up Gradle Wrapper
+      - name: Fix Gradle Wrapper
         script: | 
           cd android
-          flutter symbol-upload android
-      - name: Build APK
+          gradle wrapper --gradle-version 7.5
+      - name: Set up local.properties
         script: | 
-          flutter pub get
-          flutter build apk --release --no-tree-shake-icons
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > android/local.properties
+      - name: Build Android App
+        script: | 
+          flutter build apk --debug
     artifacts:
-      - build/app/outputs/flutter-apk/app-release.apk
+      - build/app/outputs/flutter-apk/*.apk
       
