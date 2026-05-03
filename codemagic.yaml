@@ -1,14 +1,16 @@
 workflows:
   android-workflow:
     name: Android Workflow
+    max_build_duration: 60
+    instance_type: mac_mini_m1
     scripts:
       - name: Generate Gradle Wrapper
-        script: |
+        script: | 
           cd android
-          # یہ کمانڈ وہ تمام فائلیں خود بنا دے گی جو غائب ہیں
+          # یہ لائن خود بخود تمام غائب فائلیں بنا دے گی
           gradle wrapper --gradle-version 7.5
-      - name: Build APK
-        script: |
+      - name: Build Android APK
+        script: | 
           flutter build apk --debug
     artifacts:
       - build/app/outputs/flutter-apk/*.apk
